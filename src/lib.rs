@@ -1,6 +1,7 @@
 use jieba_rs::Jieba;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+use std::sync::Mutex;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -20,24 +21,24 @@ pub struct RetToken<'a> {
 }
 
 lazy_static! {
-    pub static ref JIEBA: Jieba = Jieba::new();
+    pub static ref JIEBA: Mutex<Jieba> = Mutex::new(Jieba::new());
 }
 
 #[wasm_bindgen]
 pub fn cut(text: &str, hmm: bool) -> Vec<JsValue> {
-    let words = JIEBA.cut(text, hmm);
+    let words = JIEBA.lock().unwrap().cut(text, hmm);
     words.into_iter().map(JsValue::from).collect()
 }
 
 #[wasm_bindgen]
 pub fn cut_all(text: &str) -> Vec<JsValue> {
-    let words = JIEBA.cut_all(text);
+    let words = JIEBA.lock().unwrap().cut_all(text);
     words.into_iter().map(JsValue::from).collect()
 }
 
 #[wasm_bindgen]
 pub fn cut_for_search(text: &str, hmm: bool) -> Vec<JsValue> {
-    let words = JIEBA.cut_for_search(text, hmm);
+    let words = JIEBA.lock().unwrap().cut_for_search(text, hmm);
     words.into_iter().map(JsValue::from).collect()
 }
 
@@ -54,7 +55,7 @@ pub fn tokenize(text: &str, mode: &str, hmm: bool) -> Result<Vec<JsValue>, JsVal
             "Only `default` or `search` mode is valid",
         ));
     }
-    let tokens = JIEBA.tokenize(text, mode_enum, hmm);
+    let tokens = JIEBA.lock().unwrap().tokenize(text, mode_enum, hmm);
     let ret_tokens = tokens
         .into_iter()
         .map(|tok| {
@@ -67,4 +68,11 @@ pub fn tokenize(text: &str, mode: &str, hmm: bool) -> Result<Vec<JsValue>, JsVal
         })
         .collect();
     Ok(ret_tokens)
+}
+
+#[wasm_bindgen]
+pub fn add_word(word: &str, freq: Option<usize>, tag: Option<String>) -> usize {
+    let option_str_ref = tag.as_deref();
+
+    JIEBA.lock().unwrap().add_word(word, freq, option_str_ref)
 }

@@ -7,7 +7,13 @@ _编译成 WASM 摆脱编译 Node Addon 的烦恼_
 # Usage
 
 ```js
-const { cut, cut_all, cut_for_search, tokenize } = require("jieba-wasm");
+const {
+  cut,
+  cut_all,
+  cut_for_search,
+  tokenize,
+  add_word,
+} = require("jieba-wasm");
 cut("中华人民共和国武汉市长江大桥", true);
 // [ '中华人民共和国', '武汉市', '长江大桥' ]
 cut_all("中华人民共和国武汉市长江大桥", true);
@@ -64,6 +70,22 @@ tokenize("中华人民共和国武汉市长江大桥", "search", true);
   { word: '长江大桥', start: 10, end: 14 }
 ]
 */
+
+cut("桥大江长市汉武的省北湖国和共民人华中");
+/*
+[
+  '桥', '大江', '长',
+  '市', '汉',   '武',
+  '的', '省',   '北湖',
+  '国', '和',   '共',
+  '民', '人',   '华中'
+]
+*/
+["桥大江长", "市汉武", "省北湖", "国和共民人华中"].map((word) => {
+  add_word(word);
+});
+cut("桥大江长市汉武的省北湖国和共民人华中");
+// ["桥大江长", "市汉武", "的", "省北湖", "国和共民人华中"];
 ```
 
 # Piror Art
