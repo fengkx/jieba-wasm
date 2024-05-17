@@ -5,7 +5,7 @@
 _编译成 WASM 摆脱编译 Node Addon 的烦恼_
 
 # Usage
-
+## Node.js
 ```js
 const {
   cut,
@@ -86,6 +86,31 @@ cut("桥大江长市汉武的省北湖国和共民人华中");
 });
 cut("桥大江长市汉武的省北湖国和共民人华中");
 // ["桥大江长", "市汉武", "的", "省北湖", "国和共民人华中"];
+```
+## Browser
+```ts
+import init, { cut } from 'jieba-wasm';
+
+// 重要：使用前必须初始化
+await init();
+
+cut("中华人民共和国武汉市长江大桥", true);
+// [ '中华人民共和国', '武汉市', '长江大桥' ]
+```
+
+# 示例 Demo
+## 前期准备
+首先保证存在 rust 环境，然后运行以下命令
+```bash
+npm run build:cargo
+npm run build
+```
+
+## 运行浏览器端示例
+```bash
+cd demo/web
+npm install
+npm run dev
 ```
 
 # Piror Art
