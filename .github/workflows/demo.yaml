@@ -1,0 +1,27 @@
+name: Rust
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - name: Install
+        run: cargo install -f wasm-bindgen-cli
+      - name: Build wasm
+        run: npm run build
+      - name: Build web
+        run: |
+        cd demo/web
+        npm install
+        npm run build
