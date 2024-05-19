@@ -3,8 +3,6 @@ name: Rust
 on:
   push:
     branches: ["master"]
-  pull_request:
-    branches: ["master"]
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,11 +15,18 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - name: Install
-        run: cargo install -f wasm-bindgen-cli
+        run: |
+          cargo install -f wasm-bindgen-cli wasm-opt
+          rustup target add wasm32-unknown-unknown
       - name: Build wasm
-        run: npm run build
+        run: npm run build:cargo &&npm run build
       - name: Build web
         run: |
-        cd demo/web
-        npm install
-        npm run build
+          cd demo/web
+          npm install
+          PUBLIC_URL='/jieba-wasm/' npm run build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./demo/web/dist
