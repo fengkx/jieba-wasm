@@ -8,8 +8,8 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.0.0-rc-3f1436cca1-20240516",
+    "react-dom": "^19.0.0-rc-3f1436cca1-20240516"
   },
   "devDependencies": {
     "@rsbuild/core": "^0.6.15",
