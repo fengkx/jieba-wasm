@@ -12,6 +12,7 @@
     "build:cargo": "cargo build --release --target wasm32-unknown-unknown",
     "build:bundler": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/bundler --target bundler",
     "build:nodejs": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/nodejs --target nodejs",
+    "build:deno": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/deno --target deno",
     "build:web": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/web --target web",
     "build:opt": "wasm-opt -O3 -o pkg/web/jieba_rs_wasm_bg.wasm pkg/web/jieba_rs_wasm_bg.wasm && wasm-opt -O3 -o pkg/nodejs/jieba_rs_wasm_bg.wasm pkg/nodejs/jieba_rs_wasm_bg.wasm && wasm-opt -O3 -o pkg/bundler/jieba_rs_wasm_bg.wasm pkg/bundler/jieba_rs_wasm_bg.wasm",
     "test": "echo \"Error: no test specified\" && exit 1"
