@@ -2,13 +2,7 @@
 import { useState, use, cache, useOptimistic, useDeferredValue } from "react";
 import init, { cut } from "../../../pkg/web/jieba_rs_wasm";
 
-let cached: ReturnType<typeof init>;
-const initWasm = () => {
-  if (!cached) {
-    cached = init();
-  }
-  return cached;
-};
+const wasmInit = init();
 
 const Tag = (props: { content: string }) => (
   <span className="break-keep h-[36px] bg-blue-100 text-blue-800 text-sm font-medium m-2 px-4 py-2 rounded">
@@ -28,8 +22,7 @@ export function Demo() {
 
   const splitWords = useDeferredValue(results);
 
-  use(initWasm());
-  console.log(splitWords);
+  use(wasmInit);
 
   return (
     <div className="p-16 w-1/2 mx-auto min-w-[500px]">
