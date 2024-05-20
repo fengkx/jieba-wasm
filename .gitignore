@@ -6,3 +6,5 @@ pkg/
 wasm-pack.log
 
 pnpm-lock.yaml
+node_modules
+.wireit

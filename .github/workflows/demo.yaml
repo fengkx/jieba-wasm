@@ -18,6 +18,7 @@ jobs:
         run: |
           cargo install -f wasm-bindgen-cli wasm-opt
           rustup target add wasm32-unknown-unknown
+          npm i
       - name: Build wasm
         run: npm run build:cargo &&npm run build
       - name: Build web

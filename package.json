@@ -8,14 +8,63 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "npm run build:nodejs && npm run build:web && npm run build:bundler && npm run build:opt",
-    "build:cargo": "cargo build --release --target wasm32-unknown-unknown",
-    "build:bundler": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/bundler --target bundler",
-    "build:nodejs": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/nodejs --target nodejs",
-    "build:deno": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/deno --target deno",
-    "build:web": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/web --target web",
-    "build:opt": "wasm-opt -O3 -o pkg/web/jieba_rs_wasm_bg.wasm pkg/web/jieba_rs_wasm_bg.wasm && wasm-opt -O3 -o pkg/nodejs/jieba_rs_wasm_bg.wasm pkg/nodejs/jieba_rs_wasm_bg.wasm && wasm-opt -O3 -o pkg/bundler/jieba_rs_wasm_bg.wasm pkg/bundler/jieba_rs_wasm_bg.wasm",
+    "build": "wireit",
+    "build:cargo": "wireit",
+    "build:bundler": "wireit",
+    "build:nodejs": "wireit",
+    "build:deno": "wireit",
+    "build:web": "wireit",
+    "build:opt": "wireit",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "wireit": {
+    "build:cargo": {
+      "command": "cargo build --release --target wasm32-unknown-unknown"
+    },
+    "build:bundler": {
+      "command": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/bundler --target bundler",
+      "dependencies": [
+        "build:cargo"
+      ]
+    },
+    "build:nodejs": {
+      "command": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/nodejs --target nodejs",
+      "dependencies": [
+        "build:cargo"
+      ]
+    },
+    "build:deno": {
+      "command": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/deno --target deno",
+      "dependencies": [
+        "build:cargo"
+      ]
+    },
+    "build:web": {
+      "command": "wasm-bindgen target/wasm32-unknown-unknown/release/jieba_rs_wasm.wasm --out-dir ./pkg/web --target web",
+      "dependencies": [
+        "build:cargo"
+      ]
+    },
+    "build": {
+      "dependencies": [
+        "build:cargo",
+        "build:bundler",
+        "build:nodejs",
+        "build:deno",
+        "build:web",
+        "build:opt"
+      ]
+    },
+    "build:opt": {
+      "command": "wasm-opt -O3 -o pkg/web/jieba_rs_wasm_bg.wasm pkg/web/jieba_rs_wasm_bg.wasm && wasm-opt -O3 -o pkg/nodejs/jieba_rs_wasm_bg.wasm pkg/nodejs/jieba_rs_wasm_bg.wasm && wasm-opt -O3 -o pkg/bundler/jieba_rs_wasm_bg.wasm pkg/bundler/jieba_rs_wasm_bg.wasm && wasm-opt -O3 -o pkg/deno/jieba_rs_wasm_bg.wasm pkg/deno/jieba_rs_wasm_bg.wasm",
+      "dependencies": [
+        "build:cargo",
+        "build:bundler",
+        "build:nodejs",
+        "build:deno",
+        "build:web"
+      ]
+    }
   },
   "files": [
     "pkg/**/*"
@@ -36,5 +85,8 @@
   "bugs": {
     "url": "https://github.com/fengkx/jieba-wasm/issues"
   },
-  "homepage": "https://github.com/fengkx/jieba-wasm#readme"
+  "homepage": "https://github.com/fengkx/jieba-wasm#readme",
+  "devDependencies": {
+    "wireit": "^0.14.4"
+  }
 }
