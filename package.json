@@ -2,8 +2,28 @@
   "name": "jieba-wasm",
   "version": "1.0.0",
   "description": "WASM binding to jieba-rs",
-  "main": "pkg/nodejs/jieba_rs_wasm.js",
-  "browser": "pkg/web/jieba_rs_wasm.js",
+  "main": "./pkg/nodejs/jieba_rs_wasm.js",
+  "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./pkg/web/jieba_rs_wasm.d.ts",
+        "default": "./pkg/web/jieba_rs_wasm.js"
+      },
+      "browser": {
+        "types": "./pkg/web/jieba_rs_wasm.d.ts",
+        "default": "./pkg/web/jieba_rs_wasm.js"
+      },
+      "require": {
+        "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
+        "default": "./pkg/nodejs/jieba_rs_wasm.js"
+      },
+      "node": {
+        "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
+        "default": "./pkg/nodejs/jieba_rs_wasm.js"
+      }
+    }
+  },
   "directories": {
     "test": "tests"
   },
