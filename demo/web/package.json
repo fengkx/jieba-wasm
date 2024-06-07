@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "react": "^19.0.0-rc-3f1436cca1-20240516",
-    "react-dom": "^19.0.0-rc-3f1436cca1-20240516"
+    "react-dom": "^19.0.0-rc-3f1436cca1-20240516",
+    "jieba-wasm": "file:../.."
   },
   "devDependencies": {
     "@rsbuild/core": "^0.6.15",

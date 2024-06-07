@@ -1,6 +1,6 @@
 "use client";
 import { useState, use, cache, useOptimistic, useDeferredValue } from "react";
-import init, { cut } from "../../../pkg/web/jieba_rs_wasm";
+import init, { cut } from "jieba-wasm";
 
 const wasmInit = init();
 
