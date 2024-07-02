@@ -1,3 +1,6 @@
+# v2.0.1
+- Add dedicated export paths for Node.js and web versions in package.json. Reorder exports field [#8](https://github.com/fengkx/jieba-wasm/pull/8)
+
 # v2.0.0
 - Switch to exports field instead of subpath import [(#6)](https://github.com/fengkx/jieba-wasm/pull/6)
 
