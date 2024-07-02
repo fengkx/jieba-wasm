@@ -1,4 +1,4 @@
-name: Rust
+name: Test and build demo
 
 on:
   push:
@@ -23,9 +23,14 @@ jobs:
           npm i
       - name: Build wasm
         run: npm run build:cargo &&npm run build
+      - name: Test Node.js
+        run: |
+          cd cd ${GITHUB_WORKSPACE}/demo/node
+          npm install
+          npm test
       - name: Build web
         run: |
-          cd demo/web
+          cd ${GITHUB_WORKSPACE}/demo/web
           npm install
           PUBLIC_URL='/jieba-wasm/' npm run build
       - name: Deploy

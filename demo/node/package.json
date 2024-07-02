@@ -1,0 +1,12 @@
+{
+  "name": "node",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node tests/index.mjs"
+  },
+  "dependencies": {
+    "jieba-wasm": "file:../.."
+  },
+  "devDependencies": {}
+}
