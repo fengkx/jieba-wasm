@@ -22,6 +22,14 @@
         "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
         "default": "./pkg/nodejs/jieba_rs_wasm.js"
       }
+    },
+    "./web": {
+      "types": "./pkg/web/jieba_rs_wasm.d.ts",
+      "default": "./pkg/web/jieba_rs_wasm.js"
+    },
+    "./node": {
+      "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
+      "default": "./pkg/nodejs/jieba_rs_wasm.js"
     }
   },
   "directories": {
