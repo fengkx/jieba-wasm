@@ -25,7 +25,7 @@ jobs:
         run: npm run build:cargo &&npm run build
       - name: Test Node.js
         run: |
-          cd cd ${GITHUB_WORKSPACE}/demo/node
+          cd ${GITHUB_WORKSPACE}/demo/node
           npm install
           npm test
       - name: Build web
