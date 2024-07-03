@@ -16,6 +16,8 @@ jobs:
           submodules: true
       - run: corepack enable
       - uses: actions/setup-node@v4
+        with:
+          registry-url: "https://registry.npmjs.org"
       - name: Install
         run: |
           cargo install -f wasm-bindgen-cli wasm-opt
@@ -33,7 +35,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/demo/web
           npm install
           PUBLIC_URL='/jieba-wasm/' npm run build
-      - name: Publish to pkg.pr.new
+      - name: Publish to npm
         run: |
           cd ${GITHUB_WORKSPACE}
           npm publish --provenance --access public --tag rc
