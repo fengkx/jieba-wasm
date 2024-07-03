@@ -1,3 +1,7 @@
+# v2.1.0
+- Add deno exports condition and `deno`subpath exports [#9](https://github.com/fengkx/jieba-wasm/pull/9)
+- Add npm provenance statements
+
 # v2.0.1
 - Add dedicated export paths for Node.js and web versions in package.json. Reorder exports field [#8](https://github.com/fengkx/jieba-wasm/pull/8)
 
