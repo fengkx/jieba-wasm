@@ -1,0 +1,41 @@
+name: Publish Any Commit
+permissions:
+  id-token: write
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+      - name: Install
+        run: |
+          cargo install -f wasm-bindgen-cli wasm-opt
+          rustup target add wasm32-unknown-unknown
+          npm ci
+      - name: Build wasm
+        run: npm run build:cargo &&npm run build
+      - name: Test Node.js
+        run: |
+          cd ${GITHUB_WORKSPACE}/demo/node
+          npm install
+          npm test
+      - name: Build web
+        run: |
+          cd ${GITHUB_WORKSPACE}/demo/web
+          npm install
+          PUBLIC_URL='/jieba-wasm/' npm run build
+      - name: Publish to pkg.pr.new
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
