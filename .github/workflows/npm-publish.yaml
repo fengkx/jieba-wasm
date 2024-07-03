@@ -1,4 +1,4 @@
-name: Publish Any Commit
+name: Publish on NPM
 permissions:
   id-token: write
 on:
@@ -36,6 +36,6 @@ jobs:
       - name: Publish to pkg.pr.new
         run: |
           cd ${GITHUB_WORKSPACE}
-          npm publish --provenance --access public
+          npm publish --provenance --access public --tag rc
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
