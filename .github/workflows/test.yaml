@@ -1,0 +1,34 @@
+name: Publish Any Commit
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+      - name: Install
+        run: |
+          cargo install -f wasm-bindgen-cli wasm-opt
+          rustup target add wasm32-unknown-unknown
+          npm i
+      - name: Build wasm
+        run: npm run build:cargo &&npm run build
+      - name: Test Node.js
+        run: |
+          cd ${GITHUB_WORKSPACE}/demo/node
+          npm install
+          npm test
+      - name: Build web
+        run: |
+          cd ${GITHUB_WORKSPACE}/demo/web
+          npm install
+          PUBLIC_URL='/jieba-wasm/' npm run build
+      - name: Publish to pkg.pr.new
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          npx pkg-pr-new publish
