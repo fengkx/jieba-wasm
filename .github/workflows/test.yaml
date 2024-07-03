@@ -11,6 +11,15 @@ jobs:
           submodules: true
       - run: corepack enable
       - uses: actions/setup-node@v4
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Install
         run: |
           cargo install -f wasm-bindgen-cli wasm-opt
