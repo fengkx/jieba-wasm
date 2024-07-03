@@ -10,6 +10,10 @@
         "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
         "default": "./pkg/nodejs/jieba_rs_wasm.js"
       },
+      "deno": {
+        "types": "./pkg/deno/jieba_rs_wasm.d.ts",
+        "default": "./pkg/deno/jieba_rs_wasm.js"
+      },
       "browser": {
         "types": "./pkg/web/jieba_rs_wasm.d.ts",
         "default": "./pkg/web/jieba_rs_wasm.js"
@@ -30,6 +34,10 @@
     "./node": {
       "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
       "default": "./pkg/nodejs/jieba_rs_wasm.js"
+    },
+    "./deno": {
+      "types": "./pkg/deno/jieba_rs_wasm.d.ts",
+      "default": "./pkg/deno/jieba_rs_wasm.js"
     }
   },
   "directories": {
