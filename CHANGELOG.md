@@ -1,3 +1,6 @@
+# v2.1.1
+Fix wasm-opt process, provided smaller wasm file [e66e29a](https://github.com/fengkx/jieba-wasm/commit/e66e29a).
+
 # v2.1.0
 - Add deno exports condition and `deno`subpath exports [#9](https://github.com/fengkx/jieba-wasm/pull/9)
 - Add npm provenance statements
