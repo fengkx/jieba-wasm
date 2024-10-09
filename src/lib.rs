@@ -76,3 +76,26 @@ pub fn add_word(word: &str, freq: Option<usize>, tag: Option<String>) -> usize {
 
     JIEBA.lock().unwrap().add_word(word, freq, option_str_ref)
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct RetTag<'a> {
+    word: &'a str,
+    tag: &'a str,
+}
+
+#[wasm_bindgen]
+pub fn tag(sentence: &str, hmm: bool) -> Vec<JsValue> {
+    let jieba = JIEBA.lock().unwrap();
+    let tags = jieba.tag(sentence, hmm);
+    let ret_tags = tags
+        .into_iter()
+        .map(|t| {
+            let r = RetTag {
+                tag: t.tag,
+                word: t.word,
+            };
+            serde_wasm_bindgen::to_value(&r).unwrap()
+        })
+        .collect();
+    ret_tags
+}
