@@ -25,8 +25,8 @@ lazy_static! {
 }
 
 #[wasm_bindgen]
-pub fn cut(text: &str, hmm: bool) -> Vec<JsValue> {
-    let words = JIEBA.lock().unwrap().cut(text, hmm);
+pub fn cut(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
+    let words = JIEBA.lock().unwrap().cut(text, hmm.unwrap_or(true));
     words.into_iter().map(JsValue::from).collect()
 }
 
@@ -37,13 +37,16 @@ pub fn cut_all(text: &str) -> Vec<JsValue> {
 }
 
 #[wasm_bindgen]
-pub fn cut_for_search(text: &str, hmm: bool) -> Vec<JsValue> {
-    let words = JIEBA.lock().unwrap().cut_for_search(text, hmm);
+pub fn cut_for_search(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
+    let words = JIEBA
+        .lock()
+        .unwrap()
+        .cut_for_search(text, hmm.unwrap_or(true));
     words.into_iter().map(JsValue::from).collect()
 }
 
 #[wasm_bindgen]
-pub fn tokenize(text: &str, mode: &str, hmm: bool) -> Result<Vec<JsValue>, JsValue> {
+pub fn tokenize(text: &str, mode: &str, hmm: Option<bool>) -> Result<Vec<JsValue>, JsValue> {
     let mode_enum: jieba_rs::TokenizeMode;
     let mode = mode.to_lowercase();
     if mode == "search" {
@@ -55,7 +58,10 @@ pub fn tokenize(text: &str, mode: &str, hmm: bool) -> Result<Vec<JsValue>, JsVal
             "Only `default` or `search` mode is valid",
         ));
     }
-    let tokens = JIEBA.lock().unwrap().tokenize(text, mode_enum, hmm);
+    let tokens = JIEBA
+        .lock()
+        .unwrap()
+        .tokenize(text, mode_enum, hmm.unwrap_or(true));
     let ret_tokens = tokens
         .into_iter()
         .map(|tok| {
@@ -84,9 +90,9 @@ pub struct RetTag<'a> {
 }
 
 #[wasm_bindgen]
-pub fn tag(sentence: &str, hmm: bool) -> Vec<JsValue> {
+pub fn tag(sentence: &str, hmm: Option<bool>) -> Vec<JsValue> {
     let jieba = JIEBA.lock().unwrap();
-    let tags = jieba.tag(sentence, hmm);
+    let tags = jieba.tag(sentence, hmm.unwrap_or(true));
     let ret_tags = tags
         .into_iter()
         .map(|t| {
