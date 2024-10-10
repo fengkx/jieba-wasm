@@ -25,8 +25,8 @@ lazy_static! {
 }
 
 #[wasm_bindgen]
-pub fn cut(text: &str, hmm: bool) -> Vec<JsValue> {
-    let words = JIEBA.lock().unwrap().cut(text, hmm);
+pub fn cut(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
+    let words = JIEBA.lock().unwrap().cut(text, hmm.unwrap_or(true));
     words.into_iter().map(JsValue::from).collect()
 }
 
@@ -37,13 +37,16 @@ pub fn cut_all(text: &str) -> Vec<JsValue> {
 }
 
 #[wasm_bindgen]
-pub fn cut_for_search(text: &str, hmm: bool) -> Vec<JsValue> {
-    let words = JIEBA.lock().unwrap().cut_for_search(text, hmm);
+pub fn cut_for_search(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
+    let words = JIEBA
+        .lock()
+        .unwrap()
+        .cut_for_search(text, hmm.unwrap_or(true));
     words.into_iter().map(JsValue::from).collect()
 }
 
 #[wasm_bindgen]
-pub fn tokenize(text: &str, mode: &str, hmm: bool) -> Result<Vec<JsValue>, JsValue> {
+pub fn tokenize(text: &str, mode: &str, hmm: Option<bool>) -> Result<Vec<JsValue>, JsValue> {
     let mode_enum: jieba_rs::TokenizeMode;
     let mode = mode.to_lowercase();
     if mode == "search" {
@@ -55,7 +58,10 @@ pub fn tokenize(text: &str, mode: &str, hmm: bool) -> Result<Vec<JsValue>, JsVal
             "Only `default` or `search` mode is valid",
         ));
     }
-    let tokens = JIEBA.lock().unwrap().tokenize(text, mode_enum, hmm);
+    let tokens = JIEBA
+        .lock()
+        .unwrap()
+        .tokenize(text, mode_enum, hmm.unwrap_or(true));
     let ret_tokens = tokens
         .into_iter()
         .map(|tok| {
@@ -75,4 +81,27 @@ pub fn add_word(word: &str, freq: Option<usize>, tag: Option<String>) -> usize {
     let option_str_ref = tag.as_deref();
 
     JIEBA.lock().unwrap().add_word(word, freq, option_str_ref)
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct RetTag<'a> {
+    word: &'a str,
+    tag: &'a str,
+}
+
+#[wasm_bindgen]
+pub fn tag(sentence: &str, hmm: Option<bool>) -> Vec<JsValue> {
+    let jieba = JIEBA.lock().unwrap();
+    let tags = jieba.tag(sentence, hmm.unwrap_or(true));
+    let ret_tags = tags
+        .into_iter()
+        .map(|t| {
+            let r = RetTag {
+                tag: t.tag,
+                word: t.word,
+            };
+            serde_wasm_bindgen::to_value(&r).unwrap()
+        })
+        .collect();
+    ret_tags
 }
