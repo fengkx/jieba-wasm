@@ -1,3 +1,7 @@
+# v2.2.0
+- Add tag function [#12](https://github.com/fengkx/jieba-wasm/pull/12)
+- Enable hmm by default in `cut`, `cut_for_search`, `tokenize` and `tag` function [13bcc7e](https://github.com/fengkx/jieba-wasm/commit/13bcc7e)
+
 # v2.1.1
 Fix wasm-opt process, provided smaller wasm file [e66e29a](https://github.com/fengkx/jieba-wasm/commit/e66e29a).
 
