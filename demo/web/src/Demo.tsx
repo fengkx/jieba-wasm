@@ -16,7 +16,7 @@ export function Demo() {
   const [results, setResults] = useState<string[]>([]);
 
   const handleCut = (message: string) => {
-    const newResult = cut(message, false);
+    const newResult = cut(message, true);
     setResults([...newResult]);
   };
 
