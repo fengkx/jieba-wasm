@@ -1,7 +1,6 @@
 use jieba_rs::Jieba;
-use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
-use std::sync::Mutex;
+use std::sync::{LazyLock, Mutex};
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -20,9 +19,7 @@ pub struct RetToken<'a> {
     pub end: usize,
 }
 
-lazy_static! {
-    pub static ref JIEBA: Mutex<Jieba> = Mutex::new(Jieba::new());
-}
+static JIEBA: LazyLock<Mutex<Jieba>> = LazyLock::new(|| Mutex::new(Jieba::new()));
 
 #[wasm_bindgen]
 pub fn cut(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
