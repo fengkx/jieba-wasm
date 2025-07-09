@@ -99,7 +99,18 @@ cut("中华人民共和国武汉市长江大桥", true);
 ```
 
 # 示例 Demo
+
+## 安装依赖
+
+安装 wasm-bindgen 和 wasm-opt
+
+```bash
+cargo install wasm-bindgen-cli --locked
+cargo install wasm-opt --locked
+```
+
 ## 前期准备
+
 首先保证存在 rust 环境，然后运行以下命令
 ```bash
 npm run build:cargo
