@@ -1,3 +1,6 @@
+# v2.3.0
+-  add `with_dict` funtion [#14][#12](https://github.com/fengkx/jieba-wasm/pull/14)
+
 # v2.2.0
 - Add tag function [#12](https://github.com/fengkx/jieba-wasm/pull/12)
 - Enable hmm by default in `cut`, `cut_for_search`, `tokenize` and `tag` function [13bcc7e](https://github.com/fengkx/jieba-wasm/commit/13bcc7e)
