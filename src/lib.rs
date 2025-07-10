@@ -1,6 +1,6 @@
 use jieba_rs::Jieba;
 use serde::{Deserialize, Serialize};
-use std::sync::{LazyLock, Mutex};
+use std::{io::{BufReader}, sync::{LazyLock, Mutex}};
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -101,4 +101,14 @@ pub fn tag(sentence: &str, hmm: Option<bool>) -> Vec<JsValue> {
         })
         .collect();
     ret_tags
+}
+
+#[wasm_bindgen]
+pub fn with_dict(dict: &str) -> Result<(), JsValue> {
+    let mut jieba = JIEBA.lock().unwrap();
+
+    let mut dict_reader = BufReader::new(dict.as_bytes());
+
+    jieba.load_dict(&mut dict_reader).map_err(|e| JsValue::from_str(&e.to_string()))?;
+    Ok(())
 }

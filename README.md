@@ -86,7 +86,12 @@ cut("桥大江长市汉武的省北湖国和共民人华中");
 });
 cut("桥大江长市汉武的省北湖国和共民人华中");
 // ["桥大江长", "市汉武", "的", "省北湖", "国和共民人华中"];
+
+with_dict("自动借书机 1 n"); // 导入自定义字典，词条格式：词语 词频 词性（可选），以换行符分隔
+cut("你好我是一个自动借书机");
+// ["你好", "我", "是", "一个", "自动借书机"];
 ```
+
 ## Browser
 ```ts
 import init, { cut } from 'jieba-wasm';
@@ -99,7 +104,18 @@ cut("中华人民共和国武汉市长江大桥", true);
 ```
 
 # 示例 Demo
+
+## 安装依赖
+
+安装 wasm-bindgen 和 wasm-opt
+
+```bash
+cargo install wasm-bindgen-cli --locked
+cargo install wasm-opt --locked
+```
+
 ## 前期准备
+
 首先保证存在 rust 环境，然后运行以下命令
 ```bash
 npm run build:cargo
