@@ -1,6 +1,6 @@
 "use client";
 import { useState, use, cache, useOptimistic, useDeferredValue } from "react";
-import init, { cut } from "jieba-wasm";
+import init, { cut, with_dict } from "jieba-wasm";
 
 const wasmInit = init();
 
@@ -14,10 +14,26 @@ export function Demo() {
   const [message, setMessage] = useState("");
   const [auto, setAuto] = useState(false);
   const [results, setResults] = useState<string[]>([]);
+  const [dict, setDict] = useState("");
+  const [dictError, setDictError] = useState("");
 
   const handleCut = (message: string) => {
     const newResult = cut(message, true);
     setResults([...newResult]);
+  };
+
+  const handleDictChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDict(e.target.value);
+  };
+
+  const handleDictSubmit = () => {
+    try {
+      with_dict(dict);
+      setDictError("");
+      handleCut(message); // 重新分词以应用新字典
+    } catch (error) {
+      setDictError(error instanceof Error ? error.message : String(error));
+    }
   };
 
   const splitWords = useDeferredValue(results);
@@ -27,6 +43,33 @@ export function Demo() {
   return (
     <div className="p-16 w-1/2 mx-auto min-w-[500px]">
       <h1 className="text-3xl font-bold">jieba-wasm 浏览器端演示</h1>
+
+      <div className="mt-8">
+        <label
+          htmlFor="dict"
+          className="block mb-2 text-sm font-medium text-gray-900"
+        >
+          自定义字典
+        </label>
+        <textarea
+          value={dict}
+          onChange={handleDictChange}
+          id="dict"
+          rows={4}
+          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="每行一个词条，格式：词语 词频 词性（可选）&#10;例如：&#10;自动借书机 3 n"
+        ></textarea>
+        {dictError && (
+          <p className="mt-2 text-sm text-red-600">{dictError}</p>
+        )}
+        <button
+          onClick={handleDictSubmit}
+          type="button"
+          className="mt-4 text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 px-5 py-2.5 me-2 mb-2"
+        >
+          导入字典
+        </button>
+      </div>
 
       <div className="mt-8">
         <label
