@@ -1,6 +1,6 @@
 {
   "name": "jieba-wasm",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "WASM binding to jieba-rs",
   "main": "./pkg/nodejs/jieba_rs_wasm.js",
   "types": "./pkg/nodejs/jieba_rs_wasm.d.ts",
