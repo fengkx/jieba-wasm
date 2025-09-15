@@ -3,6 +3,22 @@ use serde::{Deserialize, Serialize};
 use std::{io::{BufReader}, sync::{LazyLock, Mutex}};
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen(typescript_custom_section)]
+const TS_APPEND_CONTENT: &'static str = r#"
+/** Represents a single token with its word and position. */
+export interface Token {
+    word: string;
+    start: number;
+    end: number;
+}
+
+/** Represents a single word and its part-of-speech tag. */
+export interface Tag {
+    word: string;
+    tag: string;
+}
+"#;
+
 #[derive(Serialize, Deserialize)]
 pub struct RetToken<'a> {
     /// Word of the token
@@ -15,19 +31,19 @@ pub struct RetToken<'a> {
 
 static JIEBA: LazyLock<Mutex<Jieba>> = LazyLock::new(|| Mutex::new(Jieba::new()));
 
-#[wasm_bindgen]
+#[wasm_bindgen(unchecked_return_type = "string[]")]
 pub fn cut(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
     let words = JIEBA.lock().unwrap().cut(text, hmm.unwrap_or(true));
     words.into_iter().map(JsValue::from).collect()
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(unchecked_return_type = "string[]")]
 pub fn cut_all(text: &str) -> Vec<JsValue> {
     let words = JIEBA.lock().unwrap().cut_all(text);
     words.into_iter().map(JsValue::from).collect()
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(unchecked_return_type = "string[]")]
 pub fn cut_for_search(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
     let words = JIEBA
         .lock()
@@ -36,7 +52,7 @@ pub fn cut_for_search(text: &str, hmm: Option<bool>) -> Vec<JsValue> {
     words.into_iter().map(JsValue::from).collect()
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(unchecked_return_type = "Token[]")]
 pub fn tokenize(text: &str, mode: &str, hmm: Option<bool>) -> Result<Vec<JsValue>, JsValue> {
     let mode_enum: jieba_rs::TokenizeMode;
     let mode = mode.to_lowercase();
@@ -80,7 +96,7 @@ pub struct RetTag<'a> {
     tag: &'a str,
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(unchecked_return_type = "Tag[]")]
 pub fn tag(sentence: &str, hmm: Option<bool>) -> Vec<JsValue> {
     let jieba = JIEBA.lock().unwrap();
     let tags = jieba.tag(sentence, hmm.unwrap_or(true));
