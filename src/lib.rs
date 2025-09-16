@@ -3,12 +3,17 @@ use serde::{Deserialize, Serialize};
 use std::{io::{BufReader}, sync::{LazyLock, Mutex}};
 use wasm_bindgen::prelude::*;
 
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-// allocator.
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+extern crate alloc;
 
+#[cfg(feature = "lol_alloc")]
+#[cfg(target_arch = "wasm32")]
+use lol_alloc::{FreeListAllocator, LockedAllocator};
+
+#[cfg(feature = "lol_alloc")]
+#[cfg(target_arch = "wasm32")]
+#[global_allocator]
+static ALLOCATOR: LockedAllocator<FreeListAllocator> =
+    LockedAllocator::new(FreeListAllocator::new());
 #[derive(Serialize, Deserialize)]
 pub struct RetToken<'a> {
     /// Word of the token
