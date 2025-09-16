@@ -1,5 +1,9 @@
+# v2.4.0
+- Drop wee_alloc and use the default allocator [#17](https://github.com/fengkx/jieba-wasm/pull/17)
+- Better return type [#17](https://github.com/fengkx/jieba-wasm/pull/17)
+
 # v2.3.0
--  add `with_dict` funtion [#14][#12](https://github.com/fengkx/jieba-wasm/pull/14)
+-  add `with_dict` funtion [#14](https://github.com/fengkx/jieba-wasm/pull/14)
 
 # v2.2.0
 - Add tag function [#12](https://github.com/fengkx/jieba-wasm/pull/12)
